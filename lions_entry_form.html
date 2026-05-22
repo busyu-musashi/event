@@ -26,27 +26,19 @@
     padding: 2rem 1rem;
   }
   .page { width: 100%; max-width: 480px; }
-
   .header { text-align: center; margin-bottom: 2rem; }
-  .header h1 {
-    font-family: 'Shippori Mincho', serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 0.5rem;
-  }
+  .header h1 { font-family: 'Shippori Mincho', serif; font-size: 1.5rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
   .event-meta { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.75rem; }
   .meta-row { display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.875rem; color: var(--text-muted); }
   .meta-row svg { width: 13px; height: 13px; stroke: var(--gold); stroke-width: 2; fill: none; flex-shrink: 0; }
-
   .card { background: white; border-radius: 12px; overflow: hidden; border: 1px solid var(--cream-dark); }
   .gold-line { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
   .card-body { padding: 1.5rem; }
-
   .form-group { margin-bottom: 1.25rem; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.25rem; }
   label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--navy); margin-bottom: 0.4rem; }
   label .required { color: var(--gold); margin-left: 3px; }
+  label .hint { font-size: 0.7rem; color: var(--text-muted); font-weight: 400; margin-left: 4px; }
   input[type="text"] {
     width: 100%;
     padding: 0.65rem 0.85rem;
@@ -60,54 +52,36 @@
     outline: none;
   }
   input[type="text"]:focus { border-color: var(--gold); background: white; }
-
   .radio-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .radio-item { position: relative; }
   .radio-item input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
   .radio-item label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     padding: 0.6rem;
     border: 1px solid var(--cream-dark);
     border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 400;
+    font-size: 0.9rem; font-weight: 400;
     color: var(--text-muted);
     cursor: pointer;
     transition: all 0.15s;
     background: var(--cream);
   }
-  .radio-item input[type="radio"]:checked + label {
-    border-color: var(--navy);
-    background: var(--navy);
-    color: white;
-    font-weight: 500;
-  }
-
+  .radio-item input[type="radio"]:checked + label { border-color: var(--navy); background: var(--navy); color: white; font-weight: 500; }
   .submit-btn {
-    width: 100%;
-    padding: 0.9rem;
-    background: var(--navy);
-    color: white;
+    width: 100%; padding: 0.9rem;
+    background: var(--navy); color: white;
     font-family: 'Noto Sans JP', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    letter-spacing: 0.05em;
-    transition: opacity 0.2s;
-    margin-top: 0.5rem;
+    font-size: 1rem; font-weight: 700;
+    border: none; border-radius: 10px;
+    cursor: pointer; letter-spacing: 0.05em;
+    transition: opacity 0.2s; margin-top: 0.5rem;
   }
   .submit-btn:hover { opacity: 0.85; }
   .submit-btn:active { opacity: 0.7; }
   .submit-btn.loading { opacity: 0.6; pointer-events: none; }
-
   .error-msg { font-size: 0.75rem; color: var(--error); margin-top: 0.3rem; display: none; }
-  .has-error input, .has-error .radio-group { outline: 1px solid var(--error); border-radius: 8px; }
+  .has-error input[type="text"] { border-color: var(--error); }
   .has-error .error-msg { display: block; }
-
   .section-label { font-size: 0.7rem; font-weight: 700; color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem; }
 </style>
 </head>
@@ -137,49 +111,37 @@
         <div class="form-group" id="group-sei">
           <label>姓<span class="required">*</span></label>
           <input type="text" id="sei" placeholder="山田">
-          <p class="error-msg">入力してください</p>
+          <p class="error-msg" id="err-sei">入力してください</p>
         </div>
         <div class="form-group" id="group-mei">
           <label>名<span class="required">*</span></label>
           <input type="text" id="mei" placeholder="花子">
-          <p class="error-msg">入力してください</p>
+          <p class="error-msg" id="err-mei">入力してください</p>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group" id="group-sei-kana">
-          <label>せい<span class="required">*</span></label>
+          <label>せい<span class="required">*</span><span class="hint">ひらがな</span></label>
           <input type="text" id="sei-kana" placeholder="やまだ">
-          <p class="error-msg">入力してください</p>
+          <p class="error-msg" id="err-sei-kana">ひらがなで入力してください</p>
         </div>
         <div class="form-group" id="group-mei-kana">
-          <label>めい<span class="required">*</span></label>
+          <label>めい<span class="required">*</span><span class="hint">ひらがな</span></label>
           <input type="text" id="mei-kana" placeholder="はなこ">
-          <p class="error-msg">入力してください</p>
+          <p class="error-msg" id="err-mei-kana">ひらがなで入力してください</p>
         </div>
       </div>
 
       <div class="form-group" id="group-type">
         <label>区分<span class="required">*</span></label>
         <div class="radio-group">
-          <div class="radio-item">
-            <input type="radio" name="type" id="type-adult" value="大人">
-            <label for="type-adult">大人</label>
-          </div>
-          <div class="radio-item">
-            <input type="radio" name="type" id="type-junior" value="ジュニア">
-            <label for="type-junior">ジュニア</label>
-          </div>
-          <div class="radio-item">
-            <input type="radio" name="type" id="type-kids" value="キッズ">
-            <label for="type-kids">キッズ</label>
-          </div>
-          <div class="radio-item">
-            <input type="radio" name="type" id="type-moc" value="MOC">
-            <label for="type-moc">MOC</label>
-          </div>
+          <div class="radio-item"><input type="radio" name="type" id="type-adult" value="大人"><label for="type-adult">大人</label></div>
+          <div class="radio-item"><input type="radio" name="type" id="type-junior" value="ジュニア"><label for="type-junior">ジュニア</label></div>
+          <div class="radio-item"><input type="radio" name="type" id="type-kids" value="キッズ"><label for="type-kids">キッズ</label></div>
+          <div class="radio-item"><input type="radio" name="type" id="type-moc" value="MOC"><label for="type-moc">MOC</label></div>
         </div>
-        <p class="error-msg">選択してください</p>
+        <p class="error-msg" id="err-type">選択してください</p>
       </div>
 
       <button class="submit-btn" id="submitBtn" onclick="submitForm()">申し込む</button>
@@ -191,6 +153,41 @@
 <script>
   var GAS_URL = 'https://script.google.com/macros/s/AKfycbz8cnRBdC2bAabMMszJfsvNMUCn3i0VZRStq7qYGbnoQ1VUbR8DuIRRuVfpvjTFdjc/exec';
 
+  // ひらがなのみ許可（長音符「ー」とスペースも許可）
+  function isHiragana(str) {
+    return /^[ぁ-んー\s　]+$/.test(str);
+  }
+
+  // 入力中にリアルタイムでひらがなチェック
+  ['sei-kana', 'mei-kana'].forEach(function(id) {
+    var input = document.getElementById(id);
+    var groupId = 'group-' + id;
+    var errId = 'err-' + id;
+
+    input.addEventListener('blur', function() {
+      var val = input.value.trim();
+      var group = document.getElementById(groupId);
+      var err = document.getElementById(errId);
+      if (val && !isHiragana(val)) {
+        group.classList.add('has-error');
+        err.textContent = 'ひらがなで入力してください';
+      } else if (!val) {
+        group.classList.add('has-error');
+        err.textContent = '入力してください';
+      } else {
+        group.classList.remove('has-error');
+      }
+    });
+
+    input.addEventListener('input', function() {
+      var val = input.value.trim();
+      var group = document.getElementById(groupId);
+      if (val && isHiragana(val)) {
+        group.classList.remove('has-error');
+      }
+    });
+  });
+
   function submitForm() {
     var sei = document.getElementById('sei').value.trim();
     var mei = document.getElementById('mei').value.trim();
@@ -200,20 +197,35 @@
     var type = typeEl ? typeEl.value : '';
 
     var valid = true;
-    var fields = [
-      { id: 'group-sei', val: sei },
-      { id: 'group-mei', val: mei },
-      { id: 'group-sei-kana', val: seiKana },
-      { id: 'group-mei-kana', val: meiKana },
-    ];
-    fields.forEach(function(f) {
-      var el = document.getElementById(f.id);
-      if (!f.val) { el.classList.add('has-error'); valid = false; }
-      else { el.classList.remove('has-error'); }
-    });
-    var typeGroup = document.getElementById('group-type');
-    if (!type) { typeGroup.classList.add('has-error'); valid = false; }
-    else { typeGroup.classList.remove('has-error'); }
+
+    // 姓
+    var groupSei = document.getElementById('group-sei');
+    if (!sei) { groupSei.classList.add('has-error'); document.getElementById('err-sei').textContent = '入力してください'; valid = false; }
+    else { groupSei.classList.remove('has-error'); }
+
+    // 名
+    var groupMei = document.getElementById('group-mei');
+    if (!mei) { groupMei.classList.add('has-error'); document.getElementById('err-mei').textContent = '入力してください'; valid = false; }
+    else { groupMei.classList.remove('has-error'); }
+
+    // せい（ひらがなチェック）
+    var groupSeiKana = document.getElementById('group-sei-kana');
+    var errSeiKana = document.getElementById('err-sei-kana');
+    if (!seiKana) { groupSeiKana.classList.add('has-error'); errSeiKana.textContent = '入力してください'; valid = false; }
+    else if (!isHiragana(seiKana)) { groupSeiKana.classList.add('has-error'); errSeiKana.textContent = 'ひらがなで入力してください'; valid = false; }
+    else { groupSeiKana.classList.remove('has-error'); }
+
+    // めい（ひらがなチェック）
+    var groupMeiKana = document.getElementById('group-mei-kana');
+    var errMeiKana = document.getElementById('err-mei-kana');
+    if (!meiKana) { groupMeiKana.classList.add('has-error'); errMeiKana.textContent = '入力してください'; valid = false; }
+    else if (!isHiragana(meiKana)) { groupMeiKana.classList.add('has-error'); errMeiKana.textContent = 'ひらがなで入力してください'; valid = false; }
+    else { groupMeiKana.classList.remove('has-error'); }
+
+    // 区分
+    var groupType = document.getElementById('group-type');
+    if (!type) { groupType.classList.add('has-error'); valid = false; }
+    else { groupType.classList.remove('has-error'); }
 
     if (!valid) return;
 
@@ -229,9 +241,7 @@
     })
     .then(function(res) { return res.json(); })
     .then(function(json) {
-      if (json.redirect) {
-        window.location.href = json.redirect;
-      }
+      if (json.redirect) { window.location.href = json.redirect; }
     })
     .catch(function() {
       btn.classList.remove('loading');
