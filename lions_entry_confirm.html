@@ -69,9 +69,19 @@
   }
   .save-btn:hover { opacity: 0.85; }
   .save-btn:active { opacity: 0.7; }
-  .save-btn svg { width: 18px; height: 18px; stroke: white; stroke-width: 2; fill: none; }
   .save-btn.loading { opacity: 0.6; pointer-events: none; }
-  .saved-msg { display: none; margin-top: 0.75rem; text-align: center; font-size: 0.8rem; color: #2a7a4f; font-weight: 500; }
+  .save-btn svg { width: 18px; height: 18px; stroke: white; stroke-width: 2; fill: none; }
+
+  .another-link {
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 0.5rem;
+  }
+  .another-link:hover { color: var(--navy); text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -128,25 +138,26 @@
     <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     画像として保存する
   </button>
-  <p class="saved-msg" id="savedMsg">✓ 保存しました！カメラロールを確認してください。</p>
+
+  <a class="another-link" href="https://busyu-musashi.github.io/lions-entry/lions_entry_form.html">
+    別のメンバーの参加入力をする
+  </a>
 </div>
 
 <script>
-  // URLパラメータから申し込み情報を取得して表示
-  const params = new URLSearchParams(window.location.search);
-  const sei = params.get('sei') || '';
-  const mei = params.get('mei') || '';
-  const kana = params.get('kana') || '';
-  const type = params.get('type') || '';
+  var params = new URLSearchParams(window.location.search);
+  var sei = params.get('sei') || '';
+  var mei = params.get('mei') || '';
+  var kana = params.get('kana') || '';
+  var type = params.get('type') || '';
 
   if (sei || mei) document.getElementById('disp-name').textContent = sei + ' ' + mei;
   if (kana) document.getElementById('disp-kana').textContent = kana;
   if (type) document.getElementById('disp-type').textContent = type;
 
   function saveImage() {
-    const btn = document.getElementById('saveBtn');
-    const msg = document.getElementById('savedMsg');
-    const area = document.getElementById('capture-area');
+    var btn = document.getElementById('saveBtn');
+    var area = document.getElementById('capture-area');
 
     btn.classList.add('loading');
     btn.textContent = '保存中...';
@@ -156,8 +167,8 @@
       scale: 2,
       useCORS: true,
       logging: false
-    }).then(canvas => {
-      const link = document.createElement('a');
+    }).then(function(canvas) {
+      var link = document.createElement('a');
       link.download = 'lions_entry_confirm.png';
       link.href = canvas.toDataURL('image/png');
       link.click();
@@ -165,8 +176,7 @@
       btn.classList.remove('loading');
       btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:white;stroke-width:2;fill:none;"><polyline points="20 6 9 17 4 12"/></svg> 保存しました！';
       btn.style.background = '#2a7a4f';
-      msg.style.display = 'block';
-    }).catch(() => {
+    }).catch(function() {
       btn.classList.remove('loading');
       btn.textContent = '画像として保存する';
       alert('保存に失敗しました。もう一度お試しください。');
