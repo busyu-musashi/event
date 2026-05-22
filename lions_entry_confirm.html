@@ -16,28 +16,14 @@
     --cream-dark: #f4ead8;
     --text-muted: #6b7a99;
   }
-  body {
-    font-family: 'Noto Sans JP', sans-serif;
-    background: var(--cream);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem 1rem;
-  }
+  body { font-family: 'Noto Sans JP', sans-serif; background: var(--cream); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
   .page { width: 100%; max-width: 480px; }
   .header { text-align: center; margin-bottom: 2rem; }
-  .check-circle {
-    width: 64px; height: 64px;
-    background: var(--gold);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 1rem;
-  }
+  .check-circle { width: 64px; height: 64px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
   .check-circle svg { width: 32px; height: 32px; stroke: white; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .header h1 { font-family: 'Shippori Mincho', serif; font-size: 1.1rem; font-weight: 500; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 0.25rem; }
   .header h2 { font-family: 'Shippori Mincho', serif; font-size: 1.6rem; font-weight: 700; color: var(--navy); letter-spacing: 0.05em; }
-  .card { background: white; border-radius: 12px; overflow: hidden; border: 1px solid var(--cream-dark); }
+  .card { background: white; border-radius: 12px; overflow: hidden; border: 1px solid var(--cream-dark); margin-bottom: 1rem; }
   .card-section { padding: 1.25rem 1.5rem; }
   .card-section + .card-section { border-top: 1px solid var(--cream-dark); }
   .section-label { font-size: 0.7rem; font-weight: 700; color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.75rem; }
@@ -45,6 +31,7 @@
   .event-meta { display: flex; flex-direction: column; gap: 0.4rem; }
   .meta-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: var(--text-muted); }
   .meta-row svg { width: 14px; height: 14px; stroke: var(--gold); stroke-width: 2; fill: none; flex-shrink: 0; }
+  .member-label { font-size: 0.7rem; font-weight: 700; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 0.75rem; }
   .info-grid { display: flex; flex-direction: column; gap: 0.75rem; }
   .info-row { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
   .info-key { font-size: 0.8rem; color: var(--text-muted); flex-shrink: 0; }
@@ -52,35 +39,11 @@
   .badge { display: inline-block; font-size: 0.8rem; font-weight: 700; padding: 0.2rem 0.75rem; border-radius: 999px; background: var(--navy); color: white; letter-spacing: 0.05em; }
   .gold-line { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
   .footer-note { margin-top: 1.5rem; text-align: center; font-size: 0.75rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem; }
-  .save-btn {
-    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-    width: 100%;
-    padding: 0.9rem;
-    background: var(--navy);
-    color: white;
-    font-family: 'Noto Sans JP', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    letter-spacing: 0.05em;
-    transition: opacity 0.2s;
-  }
+  .save-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; padding: 0.9rem; background: var(--navy); color: white; font-family: 'Noto Sans JP', sans-serif; font-size: 0.95rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; letter-spacing: 0.05em; transition: opacity 0.2s; }
   .save-btn:hover { opacity: 0.85; }
-  .save-btn:active { opacity: 0.7; }
   .save-btn.loading { opacity: 0.6; pointer-events: none; }
   .save-btn svg { width: 18px; height: 18px; stroke: white; stroke-width: 2; fill: none; }
-
-  .another-link {
-    display: block;
-    text-align: center;
-    margin-top: 1rem;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    text-decoration: none;
-    padding: 0.5rem;
-  }
+  .another-link { display: block; text-align: center; margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted); text-decoration: none; padding: 0.5rem; }
   .another-link:hover { color: var(--navy); text-decoration: underline; }
 </style>
 </head>
@@ -113,20 +76,7 @@
       </div>
       <div class="card-section">
         <p class="section-label">申し込み内容</p>
-        <div class="info-grid">
-          <div class="info-row">
-            <span class="info-key">お名前</span>
-            <span class="info-val" id="disp-name">山田 花子</span>
-          </div>
-          <div class="info-row">
-            <span class="info-key">ふりがな</span>
-            <span class="info-val" id="disp-kana">やまだ はなこ</span>
-          </div>
-          <div class="info-row">
-            <span class="info-key">区分</span>
-            <span class="info-val"><span class="badge" id="disp-type">大人</span></span>
-          </div>
-        </div>
+        <div id="members-list"></div>
       </div>
       <div class="gold-line"></div>
     </div>
@@ -146,19 +96,32 @@
 
 <script>
   var params = new URLSearchParams(window.location.search);
-  var sei = params.get('sei') || '';
-  var mei = params.get('mei') || '';
-  var kana = params.get('kana') || '';
-  var type = params.get('type') || '';
+  var count = parseInt(params.get('count') || '1');
+  var list = document.getElementById('members-list');
 
-  if (sei || mei) document.getElementById('disp-name').textContent = sei + ' ' + mei;
-  if (kana) document.getElementById('disp-kana').textContent = kana;
-  if (type) document.getElementById('disp-type').textContent = type;
+  for (var i = 0; i < count; i++) {
+    var sei = params.get('sei' + i) || '';
+    var mei = params.get('mei' + i) || '';
+    var kana = params.get('kana' + i) || '';
+    var type = params.get('type' + i) || '';
+
+    var block = document.createElement('div');
+    block.style.marginBottom = i < count - 1 ? '1rem' : '0';
+    if (i < count - 1) block.style.borderBottom = '1px solid #f4ead8';
+    if (i < count - 1) block.style.paddingBottom = '1rem';
+
+    block.innerHTML = (count > 1 ? '<p class="member-label">' + (i + 1) + '人目</p>' : '')
+      + '<div class="info-grid">'
+      + '<div class="info-row"><span class="info-key">お名前</span><span class="info-val">' + sei + ' ' + mei + '</span></div>'
+      + '<div class="info-row"><span class="info-key">ふりがな</span><span class="info-val">' + kana + '</span></div>'
+      + '<div class="info-row"><span class="info-key">区分</span><span class="info-val"><span class="badge">' + type + '</span></span></div>'
+      + '</div>';
+    list.appendChild(block);
+  }
 
   function saveImage() {
     var btn = document.getElementById('saveBtn');
     var area = document.getElementById('capture-area');
-
     btn.classList.add('loading');
     btn.textContent = '保存中...';
 
@@ -166,13 +129,14 @@
       backgroundColor: '#fdf8ef',
       scale: 2,
       useCORS: true,
-      logging: false
+      logging: false,
+      windowHeight: area.scrollHeight,
+      height: area.scrollHeight
     }).then(function(canvas) {
       var link = document.createElement('a');
       link.download = 'lions_entry_confirm.png';
       link.href = canvas.toDataURL('image/png');
       link.click();
-
       btn.classList.remove('loading');
       btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:white;stroke-width:2;fill:none;"><polyline points="20 6 9 17 4 12"/></svg> 保存しました！';
       btn.style.background = '#2a7a4f';
