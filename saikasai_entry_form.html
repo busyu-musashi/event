@@ -151,7 +151,7 @@
 </div>
 
 <script>
-  var GAS_URL = 'https://script.google.com/macros/s/AKfycbwDJii0dNkSzs59xGQUkyKh1-3Bc4xS_4s0UqqY9z0tCILSJL25iWlUDFcsZBLkk0Lb/exec';
+  var GAS_URL = 'https://script.google.com/macros/s/AKfycbxYAfSNg-WYwrQvNF21J9GxRr7sx1DKHQpMTd3KZkwj0h2yAxIa2PQKD6La5jomF2uNHg/exec';
 
   // ひらがなのみ許可（長音符「ー」とスペースも許可）
   function isHiragana(str) {
@@ -233,7 +233,7 @@
     btn.classList.add('loading');
     btn.textContent = '送信中...';
 
-    var data = { sei: sei, mei: mei, sei_kana: seiKana, mei_kana: meiKana, type: type };
+    var data = { sei: sei, mei: mei, sei_kana: seiKana, mei_kana: meiKana, type: type, event: 'saikasai' };
 
     fetch(GAS_URL, {
       method: 'POST',
