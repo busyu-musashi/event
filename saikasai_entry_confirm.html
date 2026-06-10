@@ -112,7 +112,7 @@
     var area = document.getElementById('capture-area');
     btn.classList.add('loading');
     btn.textContent = '保存中...';
-    html2canvas(area, { backgroundColor: '#f5f3ff'', scale: 2, useCORS: true, logging: false, windowHeight: area.scrollHeight, height: area.scrollHeight })
+    html2canvas(area, { backgroundColor: '#f5f3ff', scale: 2, useCORS: true, logging: false, windowHeight: area.scrollHeight, height: area.scrollHeight })
     .then(function(canvas) {
       var link = document.createElement('a');
       link.download = 'saikasai_entry_confirm.png';
