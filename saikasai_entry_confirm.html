@@ -50,7 +50,6 @@
     <h1>申し込み完了</h1>
     <h2>ありがとうございます！</h2>
   </div>
-
   <div id="capture-area">
     <div class="card">
       <div class="gold-line"></div>
@@ -73,7 +72,6 @@
       <div class="gold-line"></div>
     </div>
   </div>
-
   <p class="footer-note">！！この画面にはもう戻れません！！<br>この画面を保存してお手元に置いてください。</p>
   <button class="save-btn" id="saveBtn" onclick="saveImage()">
     <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -81,7 +79,6 @@
   </button>
   <a class="another-link" href="https://busyu-musashi.github.io/event/saikasai_entry_form.html">別のメンバーの参加入力をする</a>
 </div>
-
 <script>
   var params = new URLSearchParams(window.location.search);
   var count = parseInt(params.get('count') || '1');
@@ -95,7 +92,7 @@
     var type = params.get('type' + i) || '';
     var price = parseInt(params.get('price' + i) || '0');
     total += price;
-
+    var priceLabel = price === 0 ? '無料' : '¥' + price.toLocaleString();
     var block = document.createElement('div');
     block.style.marginBottom = i < count - 1 ? '1rem' : '0';
     if (i < count - 1) { block.style.borderBottom = '1px solid #ede9fe'; block.style.paddingBottom = '1rem'; }
@@ -104,11 +101,11 @@
       + '<div class="info-row"><span class="info-key">お名前</span><span class="info-val">' + sei + ' ' + mei + '</span></div>'
       + '<div class="info-row"><span class="info-key">ふりがな</span><span class="info-val">' + kana + '</span></div>'
       + '<div class="info-row"><span class="info-key">区分</span><span class="info-val"><span class="badge">' + type + '</span></span></div>'
-      + '<div class="info-row"><span class="info-key">金額</span><span class="info-val">¥' + price.toLocaleString() + '</span></div>'
+      + '<div class="info-row"><span class="info-key">金額</span><span class="info-val">' + priceLabel + '</span></div>'
       + '</div>';
     list.appendChild(block);
   }
-  document.getElementById('total-display').textContent = '¥' + total.toLocaleString();
+  document.getElementById('total-display').textContent = total === 0 ? '無料' : '¥' + total.toLocaleString();
 
   function saveImage() {
     var btn = document.getElementById('saveBtn');
