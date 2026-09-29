@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>出席申込 | クリパ</title>
+<title>出席申込 | クリスマスパーティー</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -50,7 +50,7 @@ input[type="text"]:focus { border-color: var(--gold); background: white; }
 <body>
 <div class="page">
 <div class="header">
-<h1>クリパ</h1>
+<h1>クリスマスパーティー</h1>
 <p style="font-size:0.8rem;color:var(--text-muted);">出席申込フォーム（一度に4名まで入力可能）</p>
 <div class="event-meta">
 <div class="meta-row">
@@ -80,9 +80,10 @@ input[type="text"]:focus { border-color: var(--gold); background: white; }
 <script>
 var GAS_URL = 'https://script.google.com/macros/s/AKfycbxRfrxYhl9Bv9-jCfucbF3JfhBH9x65M1WNJaD6QnsTXY8RamxG7Nmdt27s9I7iY1a9/exec';
 var TYPES = [
-{ label: '大人', price: 5000 },
-{ label: 'Jr.', price: 3000 },
-{ label: 'キッズ', price: 2000 }
+{ label: '20歳以上', price: 5000 },
+{ label: '20歳未満', price: 3000 },
+{ label: 'ジュニア', price: 2000 },
+{ label: 'キッズ', price: 0 }
 ];
 
 function isHiragana(str) { return /^[ぁ-んー\s ]+$/.test(str); }
