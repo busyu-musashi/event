@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>出席申込 | おやちゃい打ち上げ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --navy: #173a5e; --gold: #2a9d8f; --gold-light: #8ecfc7; --cream: #f0faf9; --cream-dark: #dff3f0; --text-muted: #6b7a99; --error: #c0392b; }
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--cream); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+.page { width: 100%; max-width: 480px; }
+.header { text-align: center; margin-bottom: 2rem; }
+.header h1 { font-family: 'Shippori Mincho', serif; font-size: 1.5rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
+.event-meta { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.75rem; }
+.meta-row { display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.875rem; color: var(--text-muted); }
+.meta-row svg { width: 13px; height: 13px; stroke: var(--gold); stroke-width: 2; fill: none; flex-shrink: 0; }
+.card { background: white; border-radius: 12px; overflow: hidden; border: 1px solid var(--cream-dark); margin-bottom: 1rem; }
+.gold-line { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
+.card-body { padding: 1.25rem 1.5rem; }
+.member-label { font-size: 0.75rem; font-weight: 700; color: var(--gold); letter-spacing: 0.15em; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+.optional-badge { font-size: 0.65rem; background: var(--cream-dark); color: var(--text-muted); padding: 2px 6px; border-radius: 4px; font-weight: 400; letter-spacing: 0; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem; }
+.form-group { margin-bottom: 1rem; }
+label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--navy); margin-bottom: 0.4rem; }
+label .required { color: var(--gold); margin-left: 3px; }
+label .hint { font-size: 0.7rem; color: var(--text-muted); font-weight: 400; margin-left: 4px; }
+input[type="text"] { width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--cream-dark); border-radius: 8px; font-family: 'Noto Sans JP', sans-serif; font-size: 0.95rem; color: var(--navy); background: var(--cream); transition: border-color 0.2s; outline: none; }
+input[type="text"]:focus { border-color: var(--gold); background: white; }
+.radio-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.radio-item { position: relative; }
+.radio-item input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+.radio-item label { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.6rem; border: 1px solid var(--cream-dark); border-radius: 8px; font-size: 0.85rem; font-weight: 400; color: var(--text-muted); cursor: pointer; transition: all 0.15s; background: var(--cream); line-height: 1.4; text-align: center; }
+.radio-item label .price { font-size: 0.7rem; color: var(--text-muted); }
+.radio-item input[type="radio"]:checked + label { border-color: var(--navy); background: var(--navy); color: white; font-weight: 500; }
+.radio-item input[type="radio"]:checked + label .price { color: rgba(255,255,255,0.7); }
+.error-msg { font-size: 0.75rem; color: var(--error); margin-top: 0.3rem; display: none; }
+.has-error input[type="text"] { border-color: var(--error); }
+.has-error .error-msg { display: block; }
+.total-card { background: white; border-radius: 12px; border: 2px solid var(--gold); padding: 1rem 1.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
+.total-label { font-size: 0.9rem; font-weight: 500; color: var(--text-muted); }
+.total-amount { font-family: 'Shippori Mincho', serif; font-size: 1.5rem; font-weight: 700; color: var(--navy); }
+.submit-btn { width: 100%; padding: 0.9rem; background: var(--navy); color: white; font-family: 'Noto Sans JP', sans-serif; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; letter-spacing: 0.05em; transition: opacity 0.2s; margin-top: 0.5rem; }
+.submit-btn:hover { opacity: 0.85; }
+.submit-btn.loading { opacity: 0.6; pointer-events: none; }
+.duplicate-error { display: none; background: #fdecea; border: 1px solid var(--error); color: var(--error); border-radius: 10px; padding: 0.9rem 1.1rem; font-size: 0.85rem; line-height: 1.6; margin-bottom: 1rem; }
+.duplicate-error.show { display: block; }
+</style>
+</head>
+<body>
+<div class="page">
+<div class="header">
+<h1>おやちゃい打ち上げ</h1>
+<p style="font-size:0.8rem;color:var(--text-muted);">出席申込フォーム（一度に4名まで入力可能）</p>
+<div class="event-meta">
+<div class="meta-row">
+<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+2026年11月8日（日）17:00〜
+</div>
+<div class="meta-row">
+<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+さかなや道場
+</div>
+</div>
+</div>
+
+<div id="members-container"></div>
+
+<div class="duplicate-error" id="duplicateError"></div>
+
+<div class="total-card">
+<span class="total-label">合計金額</span>
+<span class="total-amount" id="total-display">¥0</span>
+</div>
+
+<button class="submit-btn" id="submitBtn" onclick="submitForm()">申し込む</button>
+</div>
+
+<script>
+var GAS_URL = 'https://script.google.com/macros/s/AKfycbxRfrxYhl9Bv9-jCfucbF3JfhBH9x65M1WNJaD6QnsTXY8RamxG7Nmdt27s9I7iY1a9/exec';
+var TYPES = [
+{ label: '大人', price: 3500 },
+{ label: '大人（20歳以下）', price: 3000 },
+{ label: '中学生・小学生', price: 2500 },
+{ label: '未就学児', price: 0 }
+];
+
+function isHiragana(str) { return /^[ぁ-んー\s ]+$/.test(str); }
+function formatPrice(p) { return p === 0 ? '無料' : '¥' + p.toLocaleString(); }
+
+function createMemberCard(index) {
+var isFirst = index === 0;
+var label = (index + 1) + '人目';
+var optional = isFirst ? '' : '<span class="optional-badge">任意</span>';
+var radios = TYPES.map(function(t) {
+return '<div class="radio-item"><input type="radio" name="type' + index + '" id="t' + index + '-' + index + t.label + '" value="' + t.label + '" data-price="' + t.price + '" onchange="updateTotal()"><label for="t' + index + '-' + index + t.label + '">' + t.label + '<span class="price">' + formatPrice(t.price) + '</span></label></div>';
+}).join('');
+
+var card = document.createElement('div');
+card.className = 'card';
+card.innerHTML = '<div class="gold-line"></div>'
++ '<div class="card-body">'
++ '<div class="member-label">' + label + optional + '</div>'
++ '<div class="form-row">'
++ '<div class="form-group" id="g' + index + '-sei"><label>姓' + (isFirst ? '<span class="required">*</span>' : '') + '</label><input type="text" id="m' + index + '-sei" placeholder="山田"><p class="error-msg">入力してください</p></div>'
++ '<div class="form-group" id="g' + index + '-mei"><label>名' + (isFirst ? '<span class="required">*</span>' : '') + '</label><input type="text" id="m' + index + '-mei" placeholder="花子"><p class="error-msg">入力してください</p></div>'
++ '</div>'
++ '<div class="form-row">'
++ '<div class="form-group" id="g' + index + '-seik"><label>せい' + (isFirst ? '<span class="required">*</span>' : '') + '<span class="hint">ひらがな</span></label><input type="text" id="m' + index + '-seik" placeholder="やまだ"><p class="error-msg">ひらがなで入力してください</p></div>'
++ '<div class="form-group" id="g' + index + '-meik"><label>めい' + (isFirst ? '<span class="required">*</span>' : '') + '<span class="hint">ひらがな</span></label><input type="text" id="m' + index + '-meik" placeholder="はなこ"><p class="error-msg">ひらがなで入力してください</p></div>'
++ '</div>'
++ '<div class="form-group" id="g' + index + '-type"><label>区分' + (isFirst ? '<span class="required">*</span>' : '') + '</label><div class="radio-group">' + radios + '</div><p class="error-msg">選択してください</p></div>'
++ '</div><div class="gold-line"></div>';
+return card;
+}
+
+var container = document.getElementById('members-container');
+for (var i = 0; i < 4; i++) container.appendChild(createMemberCard(i));
+
+for (var i = 0; i < 4; i++) {
+(function(idx) {
+['seik', 'meik'].forEach(function(field) {
+var input = document.getElementById('m' + idx + '-' + field);
+var group = document.getElementById('g' + idx + '-' + field);
+input.addEventListener('blur', function() {
+var val = input.value.trim();
+if (val && !isHiragana(val)) { group.classList.add('has-error'); group.querySelector('.error-msg').textContent = 'ひらがなで入力してください'; }
+else if (!val && idx === 0) { group.classList.add('has-error'); group.querySelector('.error-msg').textContent = '入力してください'; }
+else { group.classList.remove('has-error'); }
+});
+input.addEventListener('input', function() {
+if (input.value.trim() && isHiragana(input.value.trim())) group.classList.remove('has-error');
+});
+});
+})(i);
+}
+
+function updateTotal() {
+var total = 0;
+for (var i = 0; i < 4; i++) {
+var checked = document.querySelector('input[name="type' + i + '"]:checked');
+if (checked) total += parseInt(checked.dataset.price);
+}
+document.getElementById('total-display').textContent = total === 0 ? '¥0' : '¥' + total.toLocaleString();
+}
+
+function validateMember(idx, required) {
+var sei = document.getElementById('m' + idx + '-sei').value.trim();
+var mei = document.getElementById('m' + idx + '-mei').value.trim();
+var seik = document.getElementById('m' + idx + '-seik').value.trim();
+var meik = document.getElementById('m' + idx + '-meik').value.trim();
+var type = document.querySelector('input[name="type' + idx + '"]:checked');
+var valid = true;
+if (required || sei || mei || seik || meik || type) {
+if (!sei) { document.getElementById('g' + idx + '-sei').classList.add('has-error'); valid = false; } else { document.getElementById('g' + idx + '-sei').classList.remove('has-error'); }
+if (!mei) { document.getElementById('g' + idx + '-mei').classList.add('has-error'); valid = false; } else { document.getElementById('g' + idx + '-mei').classList.remove('has-error'); }
+if (!seik) { document.getElementById('g' + idx + '-seik').classList.add('has-error'); document.getElementById('g' + idx + '-seik').querySelector('.error-msg').textContent = '入力してください'; valid = false; }
+else if (!isHiragana(seik)) { document.getElementById('g' + idx + '-seik').classList.add('has-error'); document.getElementById('g' + idx + '-seik').querySelector('.error-msg').textContent = 'ひらがなで入力してください'; valid = false; }
+else { document.getElementById('g' + idx + '-seik').classList.remove('has-error'); }
+if (!meik) { document.getElementById('g' + idx + '-meik').classList.add('has-error'); document.getElementById('g' + idx + '-meik').querySelector('.error-msg').textContent = '入力してください'; valid = false; }
+else if (!isHiragana(meik)) { document.getElementById('g' + idx + '-meik').classList.add('has-error'); document.getElementById('g' + idx + '-meik').querySelector('.error-msg').textContent = 'ひらがなで入力してください'; valid = false; }
+else { document.getElementById('g' + idx + '-meik').classList.remove('has-error'); }
+if (!type) { document.getElementById('g' + idx + '-type').classList.add('has-error'); valid = false; } else { document.getElementById('g' + idx + '-type').classList.remove('has-error'); }
+}
+return valid;
+}
+
+function getMember(idx) {
+var sei = document.getElementById('m' + idx + '-sei').value.trim();
+var mei = document.getElementById('m' + idx + '-mei').value.trim();
+var seik = document.getElementById('m' + idx + '-seik').value.trim();
+var meik = document.getElementById('m' + idx + '-meik').value.trim();
+var typeEl = document.querySelector('input[name="type' + idx + '"]:checked');
+if (!sei && !mei && !seik && !meik && !typeEl) return null;
+return { sei: sei, mei: mei, sei_kana: seik, mei_kana: meik, type: typeEl ? typeEl.value : '', price: typeEl ? parseInt(typeEl.dataset.price) : 0 };
+}
+
+function showDuplicateError(message) {
+var errBox = document.getElementById('duplicateError');
+errBox.textContent = message;
+errBox.classList.add('show');
+errBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function hideDuplicateError() {
+var errBox = document.getElementById('duplicateError');
+errBox.classList.remove('show');
+errBox.textContent = '';
+}
+
+function submitForm() {
+hideDuplicateError();
+var valid = validateMember(0, true);
+for (var i = 1; i < 4; i++) { if (!validateMember(i, false)) valid = false; }
+if (!valid) return;
+
+var members = [];
+for (var i = 0; i < 4; i++) { var m = getMember(i); if (m) members.push(m); }
+
+var btn = document.getElementById('submitBtn');
+btn.classList.add('loading');
+btn.textContent = '送信中...';
+
+fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ members: members, event: 'oyachai' }) })
+.then(function(res) { return res.json(); })
+.then(function(json) {
+if (json.redirect) { window.location.href = json.redirect; return; }
+btn.classList.remove('loading');
+btn.textContent = '申し込む';
+if (json.error === 'duplicate') { showDuplicateError('すでに申し込み済みの方が含まれています：' + json.names.join('、')); }
+else { showDuplicateError('エラーが発生しました。もう一度お試しください。'); }
+})
+.catch(function() { btn.classList.remove('loading'); btn.textContent = '申し込む'; showDuplicateError('エラーが発生しました。もう一度お試しください。'); });
+}
+</script>
+</body>
+</html>
